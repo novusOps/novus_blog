@@ -1,0 +1,66 @@
+
+
+.formcontainer{
+    background: url('../../public/assets/grid.svg');
+    /* background: url('../../../public/assets/grid.svg'); */
+    position: relative;
+    z-index: 50;
+}
+.content{
+    background-color: #070c28;
+    /* width: 100vw; */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.formwrapper{
+    background-color: #0a1035;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius:30px ;
+    padding: 20px 60px;
+
+    
+    .logo{
+        color: #a4a6b0        ;
+        font-size: 30px;
+
+    }
+    
+
+    form{
+        display: flex;
+         flex-direction: column;
+         gap: 15px;
+     }
+     label{
+        font-size: 20px;
+        color:#a4a6b0 ;
+     }
+     input{
+         padding: 10px;
+         border:none;
+         border-radius: 10px;
+         height: 30px;
+         width: 30vw;
+         border-bottom: 1px solid #a7bcff ;
+         &::placeholder{
+             color: rgb(175, 175, 175);
+         }
+     }
+     .btt{
+         background-color: #1b3298;
+         color: white;
+         padding: 5px;
+         font-weight: bold;
+         height: 35px;
+         border: none;
+         cursor: pointer;
+         border-radius: 10px;
+     }
+
+}
