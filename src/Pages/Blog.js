@@ -192,7 +192,7 @@ const handleRemoveDescription = (index, index2) => {
       <div className='blogwrapper'>
         <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
 
-        <span className='blogtitle'>Add Blog</span>
+        <span className='blogtitle'>Post a new blog</span>
           <i class="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', marginLeft:'36vw', cursor:'pointer'}} onClick={handleLogout}
 >Logout</i>
         </div>
@@ -236,7 +236,7 @@ const handleRemoveDescription = (index, index2) => {
           <div>
        {subtitles.map((sub, index) => (
          <> 
-         <label>Enter a SubTitles</label>
+         <label>SubTitles</label>
                  <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                 <input
                   type="text"
@@ -261,7 +261,7 @@ const handleRemoveDescription = (index, index2) => {
                 )}
               </div>
             
-          <label>Enter a Descriptions</label>
+          <label>Descriptions</label>
           <div>
             {blog.content[index].description.map((desc, index2) => (
               <div key={index2} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
@@ -316,8 +316,7 @@ const handleRemoveDescription = (index, index2) => {
 
       <div className='allblog'>
         <span className='blogtitle'> Your Blog</span>
-        <Blogpost   onDeleteSuccess={() => handleDeleteSuccess()}
-/>
+        <Blogpost/>
       </div>
     </div>
   );
