@@ -170,7 +170,7 @@ const handleRemoveDescription = (index, index2) => {
       <div className='blogwrapper'>
         <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
 
-        <span className='blogtitle'>Add Blog</span>
+        <span className='blogtitle'>Post a new blog</span>
           <i class="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', marginLeft:'36vw', cursor:'pointer'}} onClick={handleLogout}
 >Logout</i>
         </div>
@@ -179,7 +179,7 @@ const handleRemoveDescription = (index, index2) => {
           <label>Title</label>
           <input
             type="text"
-            placeholder="Enter the title of your blog"
+            placeholder="Enter title"
             name="title"
             value={blog.title}
             onChange={handleChange}
@@ -225,11 +225,11 @@ const handleRemoveDescription = (index, index2) => {
           <div>
        {subtitles.map((sub, index) => (
          <> 
-         <label>SubTitles</label>
+         <label>Choose Subtitle</label>
                  <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                 <input
                   type="text"
-                  placeholder={`Enter the subtitle ${index + 1}`}
+                  placeholder={`Enter subtitle ${index + 1}`}
                   name={`subtitle${index}`}
                   value={sub.subtitle}
                   onChange={(e) => handleSubtitleChange(index, e)}
@@ -250,13 +250,13 @@ const handleRemoveDescription = (index, index2) => {
                 )}
               </div>
             
-          <label>Descriptions</label>
+          <label>Enter a description</label>
           <div>
             {blog.content[index].description.map((desc, index2) => (
               <div key={index2} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                 <textarea
                   type="text"
-                  placeholder={`Enter the description ${index2 + 1}`}
+                  placeholder={`Enter description ${index2 + 1}`}
                   rows={4}
                   name={`description${index2}`}
                   value={desc}
@@ -298,13 +298,13 @@ const handleRemoveDescription = (index, index2) => {
           </div>
 
           <button className='btt1' type='submit'>
-            Add Blog
+            Post Blog
           </button>
         </form>
       </div>
 
       <div className='allblog'>
-        <span className='blogtitle'> Your Blog</span>
+        <span className='blogtitle'> Current Blogs</span>
         <Blogpost/>
       </div>
     </div>
