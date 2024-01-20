@@ -4,11 +4,21 @@ import axios from 'axios';
 // import Add from "../../public/assets/images.png";
 
 import Blogpost from './Blogpost';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 const Blog = () => {
+
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handleDeleteSuccess = () => {
+    setSuccessMessage('Blog post deleted successfully!');
+    // setTimeout(() => {
+    //   setSuccessMessage('');
+    //   window.location.reload(); // Reload the page after 2 seconds
+    // }, 2000);
+  };
   const navigate= useNavigate();
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -23,6 +33,8 @@ const Blog = () => {
   });
 
   const [filePreview, setFilePreview] = useState(null);
+  const { state } = useLocation();
+
 
   const [blog, setBlog] = useState({
     title: "",
@@ -41,10 +53,9 @@ const Blog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log("🚀 ~ handleSubmit ~ blog:", blog)
-    // return null;
+    
     try {
-      // Your existing axios.post code...
+      
       const response = await axios.post(`${BASE_URL}post_login/blog/create_blog_post/`, blog, {
         headers: {
           Authorization: "x@pcPvmFcaUrMHQKY4@pNYG22rE&vAk&P-YmnjWx-/mGxr2wcqXXVUnW89S?d@6S",
@@ -56,13 +67,16 @@ const Blog = () => {
       if (response.status === 200) {
         if (response.data.Status === 200) {
           localStorage.setItem("token", response.data.new_access_token);
-          // navigate("/blog");
+          setSuccessMessage('Blog post created successfully!');
+          setTimeout(() => {
+            setSuccessMessage('');
+            window.location.reload();
+          }, 2000);
+
         } else {
-          // Handle unsuccessful login (e.g., show an error message)
           console.error("Unsuccessful login:", response.data.Message);
         }
       } else {
-        // Handle other status codes
         console.error("Unexpected status code:", response.status);
       }
     } catch (error) {
@@ -84,9 +98,17 @@ const Blog = () => {
   useEffect(() => {
     setBlog((prev)=>({...prev, image:selectedImage}))
   
-    
-    // console.log("🚀 ~ selectedImage:", selectedImage)
   }, [selectedImage])
+  useEffect(() => {
+    if (state && state.loginSuccess) {
+      setSuccessMessage('Login successful!');
+      setTimeout(() => {
+        setSuccessMessage('');
+        // Clear the state to avoid showing the message on page refresh
+        navigate('/blog', { replace: true });
+      }, 2000);
+    }
+  }, [state, navigate]);
   
 
   const handleAddSubtitle = () => {
@@ -134,7 +156,7 @@ const Blog = () => {
       setBlog((prevFormData) => {
         const updatedContent = [...prevFormData.content];
         updatedContent[index].description[index2+1]=""
-        // console.log("🚀 ~ setBlog ~ updatedContent[index]:", updatedContent[index])
+        
         return { ...prevFormData, content: updatedContent };
       });
     }
@@ -175,35 +197,24 @@ const handleRemoveDescription = (index, index2) => {
 >Logout</i>
         </div>
         <form onSubmit={handleSubmit}>
+        {successMessage && <div className="success-message">{successMessage}</div>}
+
 
           <label>Title</label>
           <input
             type="text"
-            placeholder="Enter the title of your blog"
+            placeholder="Enter title"
             name="title"
             value={blog.title}
             onChange={handleChange}
           />
 
-          <label>Image</label>
-          {/* <input
-          // style={{display:'none'}}
-            type="file"
-            placeholder="Enter the Image URL of your blog"
-            name="image"
-            id='file'
-            accept='image/*'
-            value={blog.image.file_name}
-            onChange={handleChange}
-          />
-          {/* <label htmlFor="file">
-          <img src={blog.image ? blog.image.media_b64 : Add} alt="" />
-            <span> Add An Avatar</span>
-            </label> */} 
+          <label>Choose Image</label>
+         
              <input
                   type="file"
                   id="imageInput"
-                  style={{ height:'25px' }}
+                  style={{ height:'25px' ,'::placeholder': { height: '23px' } }}
                   accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files[0];
@@ -225,11 +236,11 @@ const handleRemoveDescription = (index, index2) => {
           <div>
        {subtitles.map((sub, index) => (
          <> 
-         <label>SubTitles</label>
+         <label>Enter a SubTitles</label>
                  <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                 <input
                   type="text"
-                  placeholder={`Enter the subtitle ${index + 1}`}
+                  placeholder={`Enter subtitle ${index + 1}`}
                   name={`subtitle${index}`}
                   value={sub.subtitle}
                   onChange={(e) => handleSubtitleChange(index, e)}
@@ -250,13 +261,13 @@ const handleRemoveDescription = (index, index2) => {
                 )}
               </div>
             
-          <label>Descriptions</label>
+          <label>Enter a Descriptions</label>
           <div>
             {blog.content[index].description.map((desc, index2) => (
               <div key={index2} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                 <textarea
                   type="text"
-                  placeholder={`Enter the description ${index2 + 1}`}
+                  placeholder={`Enter description ${index2 + 1}`}
                   rows={4}
                   name={`description${index2}`}
                   value={desc}
@@ -298,14 +309,15 @@ const handleRemoveDescription = (index, index2) => {
           </div>
 
           <button className='btt1' type='submit'>
-            Add Blog
+            Post Blog
           </button>
         </form>
       </div>
 
       <div className='allblog'>
         <span className='blogtitle'> Your Blog</span>
-        <Blogpost/>
+        <Blogpost   onDeleteSuccess={() => handleDeleteSuccess()}
+/>
       </div>
     </div>
   );

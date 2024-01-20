@@ -18,6 +18,12 @@ const Login = () => {
         password: "",
       });
 
+      const [error, setError] = useState('');
+      // const [success, setSuccess] = useState('');
+      const [successMessage, setSuccessMessage] = useState('');
+
+
+    
       const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -33,17 +39,37 @@ const Login = () => {
           if (response.status === 200) {
             if(response.data.Status===200){
             localStorage.setItem("token", response.data.Payload.access_token);
-            navigate("/blog");
+            setSuccessMessage('Login successful!');
+            setTimeout(() => {
+              setSuccessMessage('');
+              navigate("/blog", { state: { loginSuccess: true } });
+            }, 2000);
+            // navigate("/blog");
           }else {
             // Handle unsuccessful login (e.g., show an error message)
             console.error("Unsuccessful login:", response.data.Message);
+            setError(response.data.Message || 'Unknown error occurred');
+            setTimeout(() => {
+              setError('');
+            }, 2000);
+
         }
         } else {
           // Handle other status codes
           console.error("Unexpected status code:", response.status);
+          setError(`Unexpected status code: ${response.status}`);
+          setTimeout(() => {
+            setError('');
+          }, 2000);
+
       }}
         catch (error) {
           console.error("Error:", error);
+          setError('An unexpected error occurred');
+          setTimeout(() => {
+            setError('');
+          }, 2000);
+
           
         }
       };
@@ -69,6 +95,9 @@ const Login = () => {
     <div className='content'>
     <div className="formwrapper">
         <span className="logo">Welcome</span>
+        {error && <div className="error" >{error}</div>}
+          {successMessage && <div className="success">{successMessage}</div>}
+
         
         <form onSubmit={handleSubmit}>
             <label className='title'> Email*</label>

@@ -9,6 +9,8 @@ const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 const Blogpost = () => {
     const token = localStorage.getItem("token");
     const [blogPosts, setBlogPosts] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(0);
+
     const navigate=useNavigate();
 
     useEffect(() => {
@@ -32,12 +34,12 @@ const Blogpost = () => {
               // localStorage.setItem("token", response.data.new_access_token);
               setBlogPosts(response.data.Payload);
             } else {
-              // Handle unsuccessful login (e.g., show an error message)
+              
               console.error("Unsuccessful login:", response.data.Message);
             }
               console.log("🚀 ~ getPost ~ response.data.Payload:", response.data.Payload)
           } else {
-            // Handle other status codes
+            
             console.error("Unexpected status code:", response.status);
           }
         } catch (error) {
@@ -47,15 +49,28 @@ const Blogpost = () => {
       const handleBlogClick=(item)=>{
         navigate('/blogdetails', {state:item})
     }
-  
+  const handleNextClick = () => {
+    setActiveIndex((prevIndex) => prevIndex + 2);
+  };
+
+  const handlePrevClick = () => {
+    setActiveIndex((prevIndex) => Math.max(0, prevIndex - 2));
+  };
   
 
   return (
     <div>
-              <div className='container'> 
-
-            <div className='blogs' style={{display:'flex', flexWrap:'wrap', justifyContent:'center'}}>
-            {blogPosts.map((item) => (
+              <div className='container' style={{display:'flex', alignItems:'center'}}> 
+              {blogPosts.length > 2 && (
+          <div className='pagination-buttons'>
+            <button onClick={handlePrevClick} disabled={activeIndex === 0}>
+            <i class="fa-solid fa-backward" ></i>
+              {/* Previous */}
+            </button>
+            </div>
+        )}
+            <div className='blogs' style={{display:'flex', justifyContent:'center'}}>
+            {blogPosts.slice(activeIndex, activeIndex+2).map((item) => (
             <BlogItem
                 Id={item.blog_id}
 
@@ -70,6 +85,16 @@ const Blogpost = () => {
           ))}
 
       </div>
+      {blogPosts.length > 2 && (
+          <div className='pagination-buttons'>
+            {/* <button onClick={handlePrevClick} disabled={activeIndex === 0}>
+              Previous
+            </button> */}
+            <button onClick={handleNextClick} disabled={activeIndex + 2 >= blogPosts.length}>
+            <i class="fa-solid fa-forward" ></i>
+            </button>
+          </div>
+        )}
 </div>
     </div>
   )

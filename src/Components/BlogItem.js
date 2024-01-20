@@ -1,17 +1,18 @@
-import React from 'react'
+import React,{useState} from 'react'
 import './BlogItem.css'
 import axios from 'axios';
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 
 const BlogItem = (props ) => {
-  const {Id, title,addedDate,imageUrl,isFeatured,author ,onClick} =props;
+  const {Id, title,addedDate,imageUrl,isFeatured,author ,onClick, onDeleteSuccess} =props;
   
   const dateObject = new Date(addedDate);
   const formattedDate = dateObject.toLocaleDateString();
   const token = localStorage.getItem("token");
  
 
+  const [successMessage, setSuccessMessage] = useState('');
 
 
   const deletePost = async (Id) => {
@@ -26,7 +27,14 @@ const BlogItem = (props ) => {
       });
       if (response.status === 200) {
         if (response.data.Status === 200) {
-          localStorage.setItem("token", response.data.new_access_token);
+          // localStorage.setItem("token", response.data.new_access_token);
+          setSuccessMessage('Blog Post Deleted Successfully!');
+          onDeleteSuccess(); 
+          // setTimeout(() => {
+          //   setSuccessMessage('');
+          //   window.location.reload(); // Reload the page after 2 seconds
+          // }, 2000);
+
         } else {
           
           console.error("Unsuccessful login:", response.data.Message);
@@ -67,6 +75,8 @@ const BlogItem = (props ) => {
                 </div>
 
             </div>
+            {successMessage && <div className="success-message">{successMessage}</div>}
+
     </div>
   )
 }
