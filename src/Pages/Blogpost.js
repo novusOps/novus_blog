@@ -16,7 +16,6 @@ const Blogpost = () => {
 
     useEffect(() => {
         getPost();
-        console.log('vivek is our god')
       }, [token,dependency]);
 
 
