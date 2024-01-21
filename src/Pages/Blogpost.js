@@ -10,13 +10,14 @@ const Blogpost = () => {
     const token = localStorage.getItem("token");
     const [blogPosts, setBlogPosts] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [dependency, setDependency] = useState(false)
 
     const navigate=useNavigate();
 
     useEffect(() => {
         getPost();
-       
-      }, [token,]);
+        console.log('vivek is our god')
+      }, [token,dependency]);
 
 
     const getPost = async () => {
@@ -57,7 +58,10 @@ const Blogpost = () => {
     setActiveIndex((prevIndex) => Math.max(0, prevIndex - 2));
   };
   
+  const handleChange=()=>{
+    setDependency((prev)=>!prev)
 
+  }
   return (
     <div>
               <div className='container' style={{display:'flex', alignItems:'center'}}> 
@@ -80,6 +84,8 @@ const Blogpost = () => {
               isFeatured={item.is_featured}
               author={item.author_name}
               onClick={() => handleBlogClick(item)}
+              // dependency={dependency}
+              changedependency={()=>handleChange()}
               
             />
           ))}

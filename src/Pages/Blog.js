@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './blog.css';
 import axios from 'axios';
-// import Add from "../../public/assets/images.png";
 
 import Blogpost from './Blogpost';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,10 +13,11 @@ const Blog = () => {
 
   const handleDeleteSuccess = () => {
     setSuccessMessage('Blog post deleted successfully!');
-    // setTimeout(() => {
-    //   setSuccessMessage('');
-    //   window.location.reload(); // Reload the page after 2 seconds
-    // }, 2000);
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 2000);
+    setBlog((prev) => ({ ...prev }));
+
   };
   const navigate= useNavigate();
   const handleLogout = () => {
@@ -26,7 +26,6 @@ const Blog = () => {
     
   }
   const token = localStorage.getItem("token");
-  // console.log("🚀 ~ Blog ~ token:", token);
   const [selectedImage, setSelectedImage] = useState({
     media_b64: "",
     file_name: "",
@@ -70,8 +69,21 @@ const Blog = () => {
           setSuccessMessage('Blog post created successfully!');
           setTimeout(() => {
             setSuccessMessage('');
-            window.location.reload();
           }, 2000);
+          setBlog({
+            title: "",
+            image: "",
+            content: [{
+            subtitle: "",
+            description: [""],
+    }],
+    is_featured: false,
+          });
+          setSubtitles([{ subtitle: "" }]);
+          setSelectedImage({
+            media_b64: "",
+            file_name: "",
+          });
 
         } else {
           console.error("Unsuccessful login:", response.data.Message);
@@ -104,7 +116,6 @@ const Blog = () => {
       setSuccessMessage('Login successful!');
       setTimeout(() => {
         setSuccessMessage('');
-        // Clear the state to avoid showing the message on page refresh
         navigate('/blog', { replace: true });
       }, 2000);
     }
@@ -316,7 +327,7 @@ const handleRemoveDescription = (index, index2) => {
 
       <div className='allblog'>
         <span className='blogtitle'> Your Blog</span>
-        <Blogpost/>
+        <Blogpost onDeleteSuccess={handleDeleteSuccess} />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 
 const BlogItem = (props ) => {
-  const {Id, title,addedDate,imageUrl,isFeatured,author ,onClick, onDeleteSuccess} =props;
+  const {Id, title,addedDate,imageUrl,isFeatured,author ,onClick, onDeleteSuccess, changedependency} =props;
   
   const dateObject = new Date(addedDate);
   const formattedDate = dateObject.toLocaleDateString();
@@ -29,11 +29,12 @@ const BlogItem = (props ) => {
         if (response.data.Status === 200) {
           // localStorage.setItem("token", response.data.new_access_token);
           setSuccessMessage('Blog Post Deleted Successfully!');
+          setTimeout(() => {
+            setSuccessMessage('');
+            //window.location.reload(); // Reload the page after 2 seconds
+          }, 2000);
+          changedependency();
           onDeleteSuccess(); 
-          // setTimeout(() => {
-          //   setSuccessMessage('');
-          //   window.location.reload(); // Reload the page after 2 seconds
-          // }, 2000);
 
         } else {
           
