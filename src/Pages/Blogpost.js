@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 
-const Blogpost = () => {
+const Blogpost = (props) => {
     const token = localStorage.getItem("token");
     const [blogPosts, setBlogPosts] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -16,8 +16,7 @@ const Blogpost = () => {
 
     useEffect(() => {
         getPost();
-        console.log('vivek is our god')
-      }, [token,dependency]);
+      }, [token, dependency]);
 
 
     const getPost = async () => {
@@ -32,13 +31,12 @@ const Blogpost = () => {
           });
           if (response.status === 200) {
             if (response.data.Status === 200) {
-              // localStorage.setItem("token", response.data.new_access_token);
               setBlogPosts(response.data.Payload);
+              console.log("🚀 ~ getPost ~ response:", response)
             } else {
               
               console.error("Unsuccessful login:", response.data.Message);
             }
-              console.log("🚀 ~ getPost ~ response.data.Payload:", response.data.Payload)
           } else {
             
             console.error("Unexpected status code:", response.status);
@@ -47,8 +45,8 @@ const Blogpost = () => {
           console.error("Error:", error);
         }
       };
-      const handleBlogClick=(item)=>{
-        navigate('/blogdetails', {state:item})
+  const handleBlogClick=(item)=>{
+  navigate('/blogdetails', {state:item})
     }
   const handleNextClick = () => {
     setActiveIndex((prevIndex) => prevIndex + 2);
@@ -68,8 +66,7 @@ const Blogpost = () => {
               {blogPosts.length > 2 && (
           <div className='pagination-buttons'>
             <button onClick={handlePrevClick} disabled={activeIndex === 0}>
-            <i class="fa-solid fa-backward" ></i>
-              {/* Previous */}
+            <i className="fa-solid fa-backward" ></i>
             </button>
             </div>
         )}
@@ -84,8 +81,8 @@ const Blogpost = () => {
               isFeatured={item.is_featured}
               author={item.author_name}
               onClick={() => handleBlogClick(item)}
-              // dependency={dependency}
               changedependency={()=>handleChange()}
+              onDeleteSuccess={props.onDeleteSuccess}
               
             />
           ))}
@@ -93,11 +90,9 @@ const Blogpost = () => {
       </div>
       {blogPosts.length > 2 && (
           <div className='pagination-buttons'>
-            {/* <button onClick={handlePrevClick} disabled={activeIndex === 0}>
-              Previous
-            </button> */}
+            
             <button onClick={handleNextClick} disabled={activeIndex + 2 >= blogPosts.length}>
-            <i class="fa-solid fa-forward" ></i>
+            <i className="fa-solid fa-forward" ></i>
             </button>
           </div>
         )}

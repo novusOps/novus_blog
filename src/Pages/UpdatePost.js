@@ -1,6 +1,153 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
+import './updatePost.css'
+import axios from 'axios';
 
-const UpdatePost = () => {
+const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
+
+
+const UpdatePost = (props) => {
+  const token = localStorage.getItem("token");
+  const { id,  }=props;
+  // console.log("🚀 ~ UpdatePost ~ onClick:", onClick)
+
+
+  const [selectedImage, setSelectedImage] = useState({
+    media_b64: "",
+    file_name: "",
+  });
+
+  const [filePreview, setFilePreview] = useState(null);
+
+  const [blog, setBlog] = useState({
+    title: "",
+    image: selectedImage,
+    content: [{
+      subtitle: "",
+      description: [""],
+    }],
+    is_featured: false,
+  });
+  const [subtitles, setSubtitles] = useState([{ subtitle: "" }]);
+  
+  const [blogDetails, setBlogDetails] = useState(null);
+    
+
+  useEffect(() => {
+      getPostdetails();
+     
+    }, [token,id ]);
+
+  const getPostdetails = async () => {
+    
+    try {
+      const response = await axios.post(`${BASE_URL}/post_login/blog/fetch_blog_post/`,{blog_id:id}, {
+        headers: {
+          Authorization: "x@pcPvmFcaUrMHQKY4@pNYG22rE&vAk&P-YmnjWx-/mGxr2wcqXXVUnW89S?d@6S",
+          "Content-Type": "application/json",
+          accesstoken: `${token}`,
+        },
+      });
+      // console.log("🚀 ~ getPostdetails ~ response:", response)
+      if (response.status === 200) {
+        if (response.data.Status === 200) {
+         
+          setBlogDetails(response.data.Payload);
+
+          
+
+        } else {
+          
+          console.error("Unsuccessful login:", response.data.Message);
+        }
+          console.log("🚀 ~ getPostdetails ~ response.data.Payload:", response.data.Payload)
+          // console.log("🚀 ~ getPost ~ response.data.Payload:", response.data.Payload)
+      } else {
+        
+        console.error("Unexpected status code:", response.status);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (blogDetails && Array.isArray(blogDetails) && blogDetails.length > 0) {
+      // console.log("🚀 ~ useEffect ~ blogDetails:", blogDetails);
+  
+      // Assuming you want to work with the details of the first blog post in the array
+      const firstBlogPost = blogDetails[0];
+  
+      const { title, blog_image_url, is_featured, blog_content } = firstBlogPost;
+  
+      if (blog_content && blog_content.length > 0) {
+        const initialSubtitles = [];
+        const initialDescriptions = [];
+  
+        blog_content.forEach((content) => {
+          const { subtitle, description } = content.content;
+          console.log("🚀 ~ blog_content.forEach ~ description:", description)
+          console.log("🚀 ~ blog_content.forEach ~ subtitle:", subtitle)
+  
+          initialSubtitles.push(subtitle || "");
+          initialDescriptions.push(description || [""]);
+        });
+          // console.log("🚀 ~ blog_content.forEach ~  initialSubtitles.push(subtitle || ""):",  initialSubtitles.push(subtitle || ""))
+          console.log("🚀 ~ blog_content.forEach ~ initialDescriptions:", initialDescriptions)
+          console.log("🚀 ~ blog_content.forEach ~ initialSubtitles:", initialSubtitles)
+  
+        setBlog({
+          title: title || "",
+          image: selectedImage,
+          
+          // console.log("🚀 ~ content:initialSubtitles.map ~ initialSubtitles:", initialSubtitles)
+          content: initialSubtitles.map((subtitle, index) => ({
+
+            subtitle: subtitle[index] || "",
+          description: initialDescriptions[index] || "",
+          })),
+          is_featured: is_featured || false,
+        });
+        console.log("🚀 ~ content:initialSubtitles.map ~ subtitle:", initialSubtitles)
+  
+        setSubtitles(initialSubtitles);
+      }
+    }
+  }, [blogDetails]);
+  console.log("🚀 ~ UpdatePost ~ blog:", blog)
+  
+  
+
+
+  const updatePost = async () => {
+
+    
+    try {
+      
+      const response = await axios.post(`${BASE_URL}/post_login/blog/update_blog_post/${id}`, blog, {
+        headers: {
+          Authorization: "x@pcPvmFcaUrMHQKY4@pNYG22rE&vAk&P-YmnjWx-/mGxr2wcqXXVUnW89S?d@6S",
+          "Content-Type": "application/json",
+          accesstoken: `${token}`,
+        },
+      });
+      console.log("🚀 ~ handleSubmit ~ response:", response)
+      if (response.status === 200) {
+        if (response.data.Status === 200) {
+          
+          
+   
+
+        } else {
+          console.error("Unsuccessful login:", response.data.Message);
+        }
+      } else {
+        console.error("Unexpected status code:", response.status);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
 
 
     const handleChange = async(e) => {
@@ -43,7 +190,8 @@ const UpdatePost = () => {
         const { value } = e.target;
         setSubtitles((prevSubtitles) => {
           const updatedSubtitles = [...prevSubtitles];
-          updatedSubtitles[index] = { subtitle: value };
+          updatedSubtitles[index] = { value};
+          console.log("🚀 ~ setSubtitles ~ value:", value)
           return updatedSubtitles;
         });
         setBlog((prevFormData) => {
@@ -88,21 +236,21 @@ const UpdatePost = () => {
       };
   return (
     <div>
-        <div className="modal" tabindex="-1">
+        <div className="modal" tabIndex="-1" >
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title">Update Blog</h5>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       <i className="fa-solid fa-xmark fa-2xl" data-bs-dismiss="modal" onClick={props.onClose} style={{color:'white'}}></i>
       </div>
       <div className="modal-body">
         
 
-      <form onSubmit={handleSubmit}>
-        {successMessage && <div className="success-message">{successMessage}</div>}
+      <form >
+        {/* {successMessage && <div className="success-message">{successMessage}</div>} */}
 
 
-          <label>Title</label>
+        <label>Title</label>
           <input
             type="text"
             placeholder="Enter title"
@@ -116,7 +264,7 @@ const UpdatePost = () => {
              <input
                   type="file"
                   id="imageInput"
-                  style={{ height:'25px' ,'::placeholder': { height: '23px' } }}
+                  style={{ height:'20px' ,'::placeholder': { height: '18px' } }}
                   accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files[0];
@@ -136,7 +284,7 @@ const UpdatePost = () => {
                 />
 
           <div>
-       {subtitles.map((sub, index) => (
+       {subtitles.map((subtitle, index) => (
          <> 
          <label>SubTitles</label>
                  <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
@@ -144,7 +292,7 @@ const UpdatePost = () => {
                   type="text"
                   placeholder={`Enter subtitle ${index + 1}`}
                   name={`subtitle${index}`}
-                  value={sub.subtitle}
+                  value={subtitle}
                   onChange={(e) => handleSubtitleChange(index, e)}
                 />
                 <i
@@ -170,7 +318,7 @@ const UpdatePost = () => {
                 <textarea
                   type="text"
                   placeholder={`Enter description ${index2 + 1}`}
-                  rows={4}
+                  rows={2}
                   name={`description${index2}`}
                   value={desc}
                   onChange={(e) => handleDescriptionChange(index,index2, e)}
@@ -210,20 +358,20 @@ const UpdatePost = () => {
             />
           </div>
 
-          <button className='btt1' type='submit'>
+          {/* <button className='btt1' type='submit'>
             Post Blog
-          </button>
+          </button> */}
         </form>
 
 
       </div>
       <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
+        <button type="button" className=" btt1" data-bs-dismiss="modal" onClick={props.onClose}>Close</button>
+        <button type="button" className="btt1" onClick={updatePost}>Save changes</button>
       </div>
     </div>
   </div>
-</div>
+</div>s
     </div>
   )
 }

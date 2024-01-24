@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import './BlogItem.css'
 import axios from 'axios';
+import UpdatePost from '../Pages/UpdatePost';
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 
@@ -13,6 +14,15 @@ const BlogItem = (props ) => {
  
 
   const [successMessage, setSuccessMessage] = useState('');
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+  const updatePost = () => {
+    setIsUpdateModalOpen(true);
+  };
+
+  const closeUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+  };
 
 
   const deletePost = async (Id) => {
@@ -27,11 +37,9 @@ const BlogItem = (props ) => {
       });
       if (response.status === 200) {
         if (response.data.Status === 200) {
-          // localStorage.setItem("token", response.data.new_access_token);
           setSuccessMessage('Blog Post Deleted Successfully!');
           setTimeout(() => {
             setSuccessMessage('');
-            //window.location.reload(); // Reload the page after 2 seconds
           }, 2000);
           changedependency();
           onDeleteSuccess(); 
@@ -59,10 +67,15 @@ const BlogItem = (props ) => {
                 <div className='blogtit'>
                   <div className='blogdele ' style={{display: 'flex',alignItems:'center', justifyContent:'space-between'}}>
                     <span className='title'> {slicedTitle}</span>
-                    
-                    <i class="fa-solid fa-trash-can" style={{color:'white', cursor:'pointer' }} onClick={()=>{deletePost(Id)}
-                    }></i>
 
+                    <div style={{display:'flex', }}>
+
+                    <i className="fa-solid fa-pen-to-square" style={{color:'white', cursor:'pointer',padding:'0px 10px' }} onClick={()=>{updatePost()}}></i>
+                    
+                    <i className="fa-solid fa-trash-can" style={{color:'white', cursor:'pointer' }} onClick={()=>{deletePost(Id)}
+                    }></i>
+                    </div>
+                    
                   </div>
                     <img src={imageUrl} alt=''onClick={()=>onClick()}/>
                 </div> 
@@ -77,6 +90,16 @@ const BlogItem = (props ) => {
 
             </div>
             {successMessage && <div className="success-message">{successMessage}</div>}
+            {isUpdateModalOpen && (
+        <UpdatePost
+          onClose={closeUpdateModal}
+          id={Id}
+          // title={title}
+          // image={imageUrl}
+          // isFeatured={isFeatured}
+          /* Pass any necessary props to UpdatePost component */
+        />
+      )}
 
     </div>
   )

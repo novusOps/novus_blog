@@ -204,7 +204,7 @@ const handleRemoveDescription = (index, index2) => {
         <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
 
         <span className='blogtitle'>Post a new blog</span>
-          <i class="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', marginLeft:'36vw', cursor:'pointer'}} onClick={handleLogout}
+          <i className="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', marginLeft:'36vw', cursor:'pointer'}} onClick={handleLogout}
 >Logout</i>
         </div>
         <form onSubmit={handleSubmit}>
