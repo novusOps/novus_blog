@@ -16,7 +16,11 @@ const Blogpost = (props) => {
 
     useEffect(() => {
         getPost();
+<<<<<<< HEAD
       }, [token, dependency]);
+=======
+      }, [token,dependency]);
+>>>>>>> edea17f9353e2b275c64693af0be356df8daa5dd
 
 
     const getPost = async () => {
