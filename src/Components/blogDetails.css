@@ -61,6 +61,7 @@
   .vertical-line {
     border: 1px solid rgba(143, 155, 183, 1);
     height: 20px;
+    margin-right: 20px;
   }
   .logo-right-main {
     display: flex;
@@ -118,8 +119,9 @@
     font-family: 'Inter';
     font-size: 14px;
     font-weight: 500;
-    text-align: justify;
+    text-align: left;
     color: white;
+    white-space: break-spaces;
   }
   .inner-content {
     display: flex;

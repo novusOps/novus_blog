@@ -21,6 +21,8 @@ const Login = () => {
       const [error, setError] = useState('');
       // const [success, setSuccess] = useState('');
       const [successMessage, setSuccessMessage] = useState('');
+      const [showPassword, setShowPassword] = useState(false); // New state to control password visibility
+
 
 
     
@@ -39,10 +41,12 @@ const Login = () => {
           if (response.status === 200) {
             if(response.data.Status===200){
             localStorage.setItem("token", response.data.Payload.access_token);
+            localStorage.setItem("profile_id", response.data.Payload. user_profile_id);
+
             setSuccessMessage('Login successful!');
             setTimeout(() => {
               setSuccessMessage('');
-              navigate("/blog", { state: { loginSuccess: true } });
+              navigate("/blogpost", { state: { loginSuccess: true } });
             }, 2000);
             // navigate("/blog");
           }else {
@@ -73,6 +77,10 @@ const Login = () => {
           
         }
       };
+      const togglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+      };
+    
     
       const handleChange = (e) => {
         const { name, value } = e.target;
@@ -83,7 +91,7 @@ const Login = () => {
       };
     
       useEffect(() => {
-        if (token) return navigate("/blog");
+        if (token) return navigate("/blogpost");
       }, [token]);
       useEffect(() => {
         AOS.init();
@@ -111,12 +119,16 @@ const Login = () => {
          <label className='title'> Password*</label>
 
           <input
-            type="passsword"
-            placeholder="password"
+              type={showPassword ? 'text' : 'password'} 
+              placeholder="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
           />
+           <div className="password-toggle" style={{position:'absolute', left:'63%',top:'58%' }} onClick={togglePasswordVisibility}>
+
+              {showPassword ? <i class="fa-solid fa-unlock-keyhole" style={{color:'#070c28'}}></i> : <i class="fa-solid fa-lock" style={{color:'#070c28'}}></i>} 
+            </div>
           
 
           <button type="submit" className="btt">

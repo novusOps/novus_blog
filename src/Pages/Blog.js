@@ -11,20 +11,20 @@ const Blog = () => {
 
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleDeleteSuccess = () => {
-    setSuccessMessage('Blog post deleted successfully!');
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 2000);
-    setBlog((prev) => ({ ...prev }));
+  // const handleDeleteSuccess = () => {
+  //   setSuccessMessage('Blog post deleted successfully!');
+  //   setTimeout(() => {
+  //     setSuccessMessage('');
+  //   }, 2000);
+  //   setBlog((prev) => ({ ...prev }));
 
-  };
+  // };
   const navigate= useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+  // const handleLogout = () => {
+  //   localStorage.removeItem('token');
+  //   navigate('/');
     
-  }
+  // }
   const token = localStorage.getItem("token");
   const [selectedImage, setSelectedImage] = useState({
     media_b64: "",
@@ -111,15 +111,15 @@ const Blog = () => {
     setBlog((prev)=>({...prev, image:selectedImage}))
   
   }, [selectedImage])
-  useEffect(() => {
-    if (state && state.loginSuccess) {
-      setSuccessMessage('Login successful!');
-      setTimeout(() => {
-        setSuccessMessage('');
-        navigate('/blog', { replace: true });
-      }, 2000);
-    }
-  }, [state, navigate]);
+  // useEffect(() => {
+  //   if (state && state.loginSuccess) {
+  //     setSuccessMessage('Login successful!');
+  //     setTimeout(() => {
+  //       setSuccessMessage('');
+  //       navigate('/blog', { replace: true });
+  //     }, 2000);
+  //   }
+  // }, [state, navigate]);
   
 
   const handleAddSubtitle = () => {
@@ -195,17 +195,20 @@ const handleRemoveDescription = (index, index2) => {
       return { ...prevFormData, content: updatedContent };
     });
   };
+  const handleBack =()=>{
+    navigate('/blogpost')
+  }
 
  
 
   return (
     <div className='blogcontent'>
       <div className='blogwrapper'>
-        <div style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
-
+        <div style={{display:'flex', justifyContent:'space-between',alignItems:'center', width:'85%', marginRight:'60%'}}>
+          <p className='backbtt'  onClick={handleBack}>Back</p>
         <span className='blogtitle'>Post a new blog</span>
-          <i className="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', marginLeft:'36vw', cursor:'pointer'}} onClick={handleLogout}
->Logout</i>
+          {/* <i className="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', marginLeft:'36vw', cursor:'pointer'}} onClick={handleLogout}
+>Logout</i> */}
         </div>
         <form onSubmit={handleSubmit}>
         {successMessage && <div className="success-message">{successMessage}</div>}
@@ -325,10 +328,10 @@ const handleRemoveDescription = (index, index2) => {
         </form>
       </div>
 
-      <div className='allblog'>
+      {/* <div className='allblog'>
         <span className='blogtitle'> Your Blog</span>
         <Blogpost onDeleteSuccess={handleDeleteSuccess} />
-      </div>
+      </div> */}
     </div>
   );
 };

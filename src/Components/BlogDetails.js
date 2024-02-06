@@ -52,7 +52,7 @@ const BlogDetails = () => {
         }
       };
       if (!blogDetails) {
-        return <p>Loading...</p>;
+        return <p style={{display:'flex', alignItems:'center', justifyContent:'center',width:'100vw', height:'100vh', background:'#070c28', color:'#fff'}}>Loading...</p>;
     }
 
 
@@ -111,8 +111,9 @@ const BlogDetails = () => {
                          >
                            {data?.content?.subtitle}
                          </p>
+                         {/* console.log("Description array:", data?.content?.description); */}
                          {data?.content?.description.map((desc, index) => (
-                     <p style={{color:'rgba(93, 103, 125, 1)'}} key={index}>{desc}</p>
+                     <p  key={index}>{desc}</p>
                    ))}
                        </div>
                      </>

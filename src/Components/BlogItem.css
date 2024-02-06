@@ -1,5 +1,5 @@
 .blogcontets{
-    width: max-content;
+    width: 30vw;
     background-color: #0a1035;
     display: flex;
     flex-direction: column;
@@ -13,9 +13,6 @@
     gap: 10px;
 
 
-    .title{
-        color: white;        ;
-        font-size: 25px;
         
 
     }
@@ -31,12 +28,15 @@
     
     width: max-content;
     padding-top: 10px;
+    flex-direction: column;
+    gap: 10px;
 
-    .subtitle{
-        color: white;       ;
-        font-size: 20px;
-        margin: 0px 1vw;
-    }
+    
+    .title{
+        color: white;        ;
+        font-size: 25px;
+
+    
     
 
 }

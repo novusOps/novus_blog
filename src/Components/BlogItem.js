@@ -57,7 +57,7 @@ const BlogItem = (props ) => {
       console.error("Error:", error);
     }
   };
-  const slicedTitle = title.slice(0, 30);
+  const slicedTitle = title.length >30 ? `${title.slice(0, 30)}...` :title
    
 
   return (
@@ -65,10 +65,9 @@ const BlogItem = (props ) => {
             <div className='blogcontets'  >
 
                 <div className='blogtit'>
-                  <div className='blogdele ' style={{display: 'flex',alignItems:'center', justifyContent:'space-between'}}>
-                    <span className='title'> {slicedTitle}</span>
+                  <div className='blogdele ' style={{display: 'flex',alignItems:'center', justifyContent:'end'}}>
 
-                    <div style={{display:'flex', }}>
+                    <div style={{display:'flex',  }}>
 
                     <i className="fa-solid fa-pen-to-square" style={{color:'white', cursor:'pointer',padding:'0px 10px' }} onClick={()=>{updatePost()}}></i>
                     
@@ -80,10 +79,10 @@ const BlogItem = (props ) => {
                     <img src={imageUrl} alt=''onClick={()=>onClick()}/>
                 </div> 
                 <div className='des'>
-                    <span className='subtitle'>{author}</span>
+                    <span className='title'> {slicedTitle}</span>
+
                     
-                   <span className='subtitle'>IsFeature:{String(isFeatured)}</span>
-                   <span className='subtitle'>{formattedDate}</span>
+                   <span className='subtitles' style={{fontSize:'20px', color:'#8f9bb7'}}>{formattedDate}</span>
 
 
                 </div>
