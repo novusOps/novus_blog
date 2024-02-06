@@ -153,7 +153,7 @@ const Blogpost = (props) => {
     <div>
               <Navbar/>
 
-      <div className='blog-section'>
+      <div className='blog-sections'>
       {successMessage && <div className="success-message">{successMessage}</div>}
 
         <div className='blog-sec'>
