@@ -15,7 +15,7 @@ const UpdatePost = (props) => {
     media_b64: "",
     file_name: "",
   });
-
+ // eslint-disable-next-line
   const [filePreview, setFilePreview] = useState(null);
 
   const [blog, setBlog] = useState({
@@ -34,7 +34,7 @@ const UpdatePost = (props) => {
 
   useEffect(() => {
       getPostdetails();
-     
+      // eslint-disable-next-line
     }, [token,id ]);
 
   const getPostdetails = async () => {
@@ -76,7 +76,7 @@ const UpdatePost = (props) => {
   
       // Assuming you want to work with the details of the first blog post in the array
       const firstBlogPost = blogDetails[0];
-  
+       // eslint-disable-next-line
       const { title, blog_image_url, is_featured, blog_content } = firstBlogPost;
   
       if (blog_content && blog_content.length > 0) {
@@ -112,6 +112,7 @@ const UpdatePost = (props) => {
         setSubtitles(initialSubtitles);
       }
     }
+     // eslint-disable-next-line
   }, [blogDetails]);
   console.log("🚀 ~ UpdatePost ~ blog:", blog)
   
