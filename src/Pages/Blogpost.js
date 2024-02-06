@@ -3,7 +3,7 @@ import './blogpost.css'
 import BlogItem from '../Components/BlogItem'
 import  axios from 'axios'
 import { useNavigate,useLocation } from 'react-router-dom';
-import { hover } from '@testing-library/user-event/dist/hover';
+// import { hover } from '@testing-library/user-event/dist/hover';
 import Navbar from '../Components/navbar/Navbar';
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
@@ -27,7 +27,8 @@ const Blogpost = (props) => {
 
     useEffect(() => {
         getPost();
-      }, [token, dependency]);
+                // eslint-disable-next-line
+ }, [token, dependency]);
       useEffect(() => {
         if (state && state.loginSuccess) {
           setSuccessMessage('Login successful!');
@@ -83,6 +84,7 @@ const Blogpost = (props) => {
 
         useEffect(() => {
           getfeaturePost();
+                  // eslint-disable-next-line
         }, [token, dependency]);
 
         const getfeaturePost = async () => {

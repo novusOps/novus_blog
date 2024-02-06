@@ -6,7 +6,7 @@ const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 
 const BlogItem = (props ) => {
-  const {Id, title,addedDate,imageUrl,isFeatured,author ,onClick, onDeleteSuccess, changedependency} =props;
+  const {Id, title,addedDate,imageUrl,onClick, onDeleteSuccess, changedependency} =props;
   
   const dateObject = new Date(addedDate);
   const formattedDate = dateObject.toLocaleDateString();
@@ -16,9 +16,9 @@ const BlogItem = (props ) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
-  const updatePost = () => {
-    setIsUpdateModalOpen(true);
-  };
+  // const updatePost = () => {
+  //   setIsUpdateModalOpen(true);
+  // };
 
   const closeUpdateModal = () => {
     setIsUpdateModalOpen(false);

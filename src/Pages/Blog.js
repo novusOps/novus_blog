@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './blog.css';
 import axios from 'axios';
 
-import Blogpost from './Blogpost';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import Blogpost from './Blogpost';
+import {  useNavigate } from 'react-router-dom';
 
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
@@ -30,9 +30,9 @@ const Blog = () => {
     media_b64: "",
     file_name: "",
   });
-
+        // eslint-disable-next-line
   const [filePreview, setFilePreview] = useState(null);
-  const { state } = useLocation();
+  // const { state } = useLocation();
 
 
   const [blog, setBlog] = useState({

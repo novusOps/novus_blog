@@ -41,7 +41,7 @@ const Login = () => {
           if (response.status === 200) {
             if(response.data.Status===200){
             localStorage.setItem("token", response.data.Payload.access_token);
-            localStorage.setItem("profile_id", response.data.Payload. user_profile_id);
+            localStorage.setItem("profile_id", response.data.Payload.user_profile_id);
 
             setSuccessMessage('Login successful!');
             setTimeout(() => {
@@ -92,9 +92,11 @@ const Login = () => {
     
       useEffect(() => {
         if (token) return navigate("/blogpost");
+        // eslint-disable-next-line
       }, [token]);
       useEffect(() => {
         AOS.init();
+
       }, []);
 
   return (
