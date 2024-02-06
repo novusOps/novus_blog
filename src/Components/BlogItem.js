@@ -69,7 +69,7 @@ const BlogItem = (props ) => {
 
                     <div style={{display:'flex',  }}>
 
-                    <i className="fa-solid fa-pen-to-square" style={{color:'white', cursor:'pointer',padding:'0px 10px' }} onClick={()=>{updatePost()}}></i>
+                    {/* <i className="fa-solid fa-pen-to-square" style={{color:'white', cursor:'pointer',padding:'0px 10px' }} onClick={()=>{updatePost()}}></i> */}
                     
                     <i className="fa-solid fa-trash-can" style={{color:'white', cursor:'pointer' }} onClick={()=>{deletePost(Id)}
                     }></i>

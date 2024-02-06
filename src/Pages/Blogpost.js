@@ -4,6 +4,7 @@ import BlogItem from '../Components/BlogItem'
 import  axios from 'axios'
 import { useNavigate,useLocation } from 'react-router-dom';
 import { hover } from '@testing-library/user-event/dist/hover';
+import Navbar from '../Components/navbar/Navbar';
 const BASE_URL = process.env.BASE_URL || "https://stagingbe.novusaurelius.com/";
 
 
@@ -147,13 +148,11 @@ const Blogpost = (props) => {
   const handleAddblog=()=>{
     navigate('/blog')
   }
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
-    
-  }
+  
   return (
     <div>
+              <Navbar/>
+
       <div className='blog-section'>
       {successMessage && <div className="success-message">{successMessage}</div>}
 
@@ -163,8 +162,8 @@ const Blogpost = (props) => {
             <div className="blogHeaderSection">
              <h3> 'Our Blog'</h3> 
             </div>
-            <i className="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', cursor:'pointer'}} onClick={handleLogout}
->Logout</i>
+            {/* <i className="fa-solid fa-right-from-bracket" style={{color:'#a4a6b0', cursor:'pointer'}} onClick={handleLogout}
+>Logout</i> */}
           </div>
       <h5 className="blog-title">See News & Articles</h5>
       <p className="blog-title-paragraph">
